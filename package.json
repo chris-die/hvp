@@ -2,7 +2,7 @@
   "name": "hvp",
   "version": "1.0.0",
   "description": "HTML video player",
-  "main": "index.ts",
+  "private": true,
   "scripts": {
     "build": "webpack",
     "serve": "webpack serve",
@@ -19,8 +19,13 @@
   },
   "homepage": "https://github.com/chris-die/hvp#readme",
   "devDependencies": {
+    "@types/video.js": "^7.3.27",
+    "css-loader": "^6.4.0",
+    "html-webpack-plugin": "^5.4.0",
+    "style-loader": "^3.3.0",
     "ts-loader": "^9.2.6",
     "typescript": "^4.4.4",
+    "video.js": "^7.15.4",
     "webpack": "^5.58.2",
     "webpack-cli": "^4.9.0",
     "webpack-dev-server": "^4.3.1"
