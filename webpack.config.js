@@ -16,6 +16,13 @@ module.exports = {
         test: /\.css$/i,
         use: ['style-loader', 'css-loader'],
       },
+      {
+        loader: 'url-loader',
+        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+        options: {
+          limit: 100000,
+        }
+      }
     ],
   },
   resolve: {
@@ -43,7 +50,6 @@ module.exports = {
       })
     ],
   },
-  devtool: false,
   // devServer: {
   //   headers: {},
   //   static: [
