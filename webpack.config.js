@@ -41,6 +41,7 @@ module.exports = {
   },
   stats: {
     children: true,
+    modules: false,
   },
   optimization: {
     minimize: true,

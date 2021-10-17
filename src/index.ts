@@ -26,10 +26,6 @@ player.ready(() => {
   console.log('ready')
 })
 
-// WDS
-// - Why font data URI in output?
-// - Maybe reduce output levels (eg. don't output `built` info)
-
 // Serato videos
 //  - id URL arg
 //  - Poster image
@@ -45,7 +41,8 @@ player.ready(() => {
 // - Either would need Lambda@Edge
 
 // Build script
-// - CLI return codes
+// - CLI exit codes
+// - Coloring/better output
 
 // `embed.html` test page
 //  - serve from WDS
