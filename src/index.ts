@@ -28,6 +28,7 @@ player.ready(() => {
 
 // WDS
 // - Why font data URI in output?
+// - Maybe reduce output levels (eg. don't output `built` info)
 
 // Serato videos
 //  - id URL arg
@@ -38,7 +39,13 @@ player.ready(() => {
 // Events for analytics (only for Serato vids)
 //  - `timeupdate` event (can't find in docs)
 
-// Build process for `player.html`
+// CSP considerations
+// - Nonce? https://content-security-policy.com/nonce/
+// - Hash? https://content-security-policy.com/hash/
+// - Either would need Lambda@Edge
+
+// Build script
+// - CLI return codes
 
 // `embed.html` test page
 //  - serve from WDS

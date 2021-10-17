@@ -6,7 +6,8 @@
   "scripts": {
     "build": "webpack --mode development",
     "build-prod": "webpack --mode production",
-    "build-player": "webpack --mode production && ts-node --project ./tsconfig.node.json ./build-player.ts ",
+    "build-player": "webpack --mode production && ts-node --project ./tsconfig.node.json ./build-player.ts",
+    "build-player-from-dist": "ts-node --project ./tsconfig.node.json ./build-player.ts",
     "serve": "webpack serve",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
