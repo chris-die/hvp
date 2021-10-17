@@ -25,3 +25,26 @@ player.src({
 player.ready(() => {
   console.log('ready')
 })
+
+// WDS
+// - Why font data URI in output?
+
+// Serato videos
+//  - id URL arg
+//  - Poster image
+
+// src URL arg (useful for testing)
+
+// Events for analytics (only for Serato vids)
+//  - `timeupdate` event (can't find in docs)
+
+// Build process for `player.html`
+
+// `embed.html` test page
+//  - serve from WDS
+//  - Uses `player.html` in an IFRAME
+//  - UI and Javascript
+//      - Set size of IFRAME.
+//      - Set Serato video ID, or
+//      - Set src URL, or
+//      - Choose from hardcoded test src URLs.

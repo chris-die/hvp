@@ -18,6 +18,7 @@ function createPlayerHtml() {
 
   html = replaceScriptTags(html, scripts, path.resolve('./dist'))
   
+  // TODO: write file
   console.log(html)
 }
 
