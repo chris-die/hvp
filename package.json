@@ -6,6 +6,7 @@
   "scripts": {
     "build": "webpack --mode development",
     "build-prod": "webpack --mode production",
+    "build-player": "webpack --mode production && ts-node --project ./tsconfig.node.json ./build-player.ts ",
     "serve": "webpack serve",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,16 +16,15 @@
   },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/chris-die/hvp/issues"
-  },
   "homepage": "https://github.com/chris-die/hvp#readme",
   "devDependencies": {
+    "@types/node": "^16.11.1",
     "@types/video.js": "^7.3.27",
     "css-loader": "^6.4.0",
     "html-webpack-plugin": "^5.4.0",
     "style-loader": "^3.3.0",
     "ts-loader": "^9.2.6",
+    "ts-node": "^10.3.0",
     "typescript": "^4.4.4",
     "uglify-js": "^3.14.2",
     "video.js": "^7.15.4",

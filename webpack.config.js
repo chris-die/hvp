@@ -50,6 +50,12 @@ module.exports = {
       })
     ],
   },
+  performance: {
+    // Aiming for 700kB total. May have to tweak this :-)
+    maxEntrypointSize: 700000,
+    maxAssetSize: 700000,
+  },
+
   // devServer: {
   //   headers: {},
   //   static: [
