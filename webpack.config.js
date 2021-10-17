@@ -57,12 +57,17 @@ module.exports = {
     maxAssetSize: 700000,
   },
 
-  // devServer: {
-  //   headers: {},
-  //   static: [
-  //     {
-  //       directory: path.join(__dirname, 'public'),
-  //     },
-  //   ],
-  // }
+  devServer: {
+    // headers: {},
+    static: [
+      {
+        directory: path.join(__dirname, 'public/embed'),
+        publicPath: '/embed'
+      },
+      {
+        directory: path.join(__dirname, 'dist'),
+        publicPath: '/dist'
+      },
+    ],
+  }
 };
