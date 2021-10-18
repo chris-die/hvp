@@ -30,6 +30,16 @@
     x
     <input type="number" size="5" id="embed-height" value="315" class="embed-size">
   </div>
-  <iframe width="560" height="315" title="Serato video player" frameborder="1" allow="fullscreen" allowfullscreen></iframe>
+  <div>
+    <input type="radio" name="html-src" id="html-src-wds" data-src="/index.html" checked>
+    <label for="html-src-wds">Webpack Dev Server</label>
+    <input type="radio" name="html-src" id="html-src-dist" data-src="/dist/index.html">
+    <label for="html-src-dist">Dist directory</label>
+  </div>
+  <div id="iframe-container">
+    <iframe width="560" height="315" title="Serato video player" frameborder="0" allow="fullscreen" allowfullscreen></iframe>
+  </div>
+  <pre id="embed-url"></pre>
+  <pre id="embed-html" style="width: 600px;"></pre>
 </body>
 </html>
