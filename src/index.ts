@@ -21,10 +21,12 @@ interface VideoJsPlayer extends VideoJsPlayerBase {
 interface UrlOptions {
   /** Display controls. Defaults to `true`. */
   controls: boolean;
-  /** Play muted. Defaults to `false`. */
-  muted: boolean;
   /** Autoplay. Defaults to `true`. */
   autoplay: boolean;
+  /** Play muted. Defaults to `false`. */
+  muted: boolean;
+  /** Loop play. Defaults to `false`. */
+  loop: boolean;
   /** Allow Picture-in-Picture. Defaults to `true`. */
   pictureInPicture: boolean;
 }
@@ -35,8 +37,9 @@ const queryStringParams = new URLSearchParams(location.search)
 const urlOptions = ((qs: URLSearchParams): UrlOptions => {
   return {
     controls: qs.get('controls') === null || qs.get('controls') !== '0',
-    muted: qs.get('muted') === '1',
     autoplay: qs.get('autoplay') === null || qs.get('autoplay') !== '0',
+    muted: qs.get('muted') === '1',
+    loop: qs.get('muted') === '1',
     pictureInPicture: qs.get('pip') === null || qs.get('pip') !== '0',
   }
 })(queryStringParams)
@@ -50,27 +53,30 @@ const source = ((qs: URLSearchParams): videojs.Tech.SourceObject => {
   }
 })(queryStringParams)
 
-
 const player: VideoJsPlayer = <VideoJsPlayer>videojs(
   'player', {
     // https://docs.videojs.com/tutorial-options.html
     controls: urlOptions.controls,
-    muted: urlOptions.muted,
     autoplay: urlOptions.autoplay,
+    muted: urlOptions.muted,
+    loop: urlOptions.loop,
     controlBar: {
-      'pictureInPictureToggle': urlOptions.pictureInPicture
+      pictureInPictureToggle: urlOptions.pictureInPicture
     },
     preload: 'auto',
-    // Layout options explained here:
-    // https://docs.videojs.com/tutorial-layout.html
+    // Layout options explained here: https://docs.videojs.com/tutorial-layout.html
     fill: true,
     responsive: true,
   }
 )
 
-// This is ignored by Firefox. There's no way to disabled PIP.
-// Firefox will also show the `Watch in Picture-in-Picture` option in the context menu
-// and display that annoying little overlay icon on the right side of the video :-(
+// Disable the Picture-in-Picture option on the <video> element.
+// This will remove the `Watch in Picture-in-Picture` option in the context menu.
+// This seems to only work in Chrome. Firefox and Safari ignore it.
+// This means that Firefox will always show that annoying little overlay icon on
+// the right side of the video :-(
+// FYI, the `controlBar.pictureInPictureToggle` option (set above) removes the PIP UI
+// element from player control bar.
 player.disablePictureInPicture(!urlOptions.pictureInPicture)
 
 player.src(source)
