@@ -3,14 +3,6 @@ const playerProductionDomain = 'https://player.serato.com/'
 let playerURL = ''
 const iframe = document.getElementsByTagName('iframe')[0]
 
-// Text boxes that define the embed dimensions
-Array.from(document.getElementsByClassName('embed-size')).forEach(ele => {
-  ele.addEventListener('keyup', setEmbedSize)
-  ele.addEventListener('change', setEmbedSize)
-  ele.addEventListener('focus', setFrameborder)
-  ele.addEventListener('blur', setFrameborder)
-})
-
 // Radio buttons that specify the video source
 document.getElementsByName('vid-src').forEach(ele => ele.addEventListener('click', setPlayerUrl))
 
@@ -20,7 +12,22 @@ Array.from(document.getElementsByClassName('vid-src-text')).forEach(ele => {
   ele.addEventListener('change', setPlayerUrl)
 })
 
-// Radio buttons that specify the HTML document
+// Text boxes that define the embed dimensions
+Array.from(document.getElementsByClassName('embed-size')).forEach(ele => {
+  ele.addEventListener('keyup', setEmbedSize)
+  ele.addEventListener('change', setEmbedSize)
+  ele.addEventListener('focus', setFrameborder)
+  ele.addEventListener('blur', setFrameborder)
+})
+
+// Checkboxes that set options for the embedded player
+Array.from(document.getElementsByClassName('embed-options')).forEach(ele => {
+  ele.addEventListener('click', setPlayerUrl)
+})
+
+
+// Radio buttons that specify the HTML document to use.
+// ie. One that is served from WDS or one that is served from the `dist` directory.
 document.getElementsByName('html-src').forEach(ele => ele.addEventListener('click', setPlayerUrl))
 
 function setEmbedSize() {
@@ -32,12 +39,22 @@ function setEmbedSize() {
   setFrameborder()
 }
 
+function getEmbedPlayerOptions() {
+  const params = []
+  Array.from(document.getElementsByClassName('embed-options')).forEach(ele => {
+    if (ele.checked === !!parseInt(ele.dataset.checked)) {
+      params.push(ele.dataset.urlParam)
+    }
+  })
+  return params
+}
+
 function setPlayerUrl() {
-  const params = getPlayerUrlParams()
+  const params = getPlayerSourceUrlParams()
   if (params.length > 0) {
-    const playerHtmlDoc = getPlayerHtmlDoc()
-    if (playerURL !== playerHtmlDoc + '?' + params.join('&')) {
-      playerURL = playerHtmlDoc + '?' + params.join('&')
+    const url = getPlayerHtmlDoc() + '?' + params.concat(getEmbedPlayerOptions()).join('&')
+    if (playerURL !== url) {
+      playerURL = url
       iframe.src = playerURL
       document.getElementById('embed-url').innerHTML = playerURL
       setEmbedHtmlSnippet()
@@ -59,7 +76,7 @@ function setFrameborder() {
   document.getElementById('iframe-container').style.borderColor = show ? 'rgb(245, 118, 196)' : '#000'
 }
 
-function getPlayerUrlParams() {
+function getPlayerSourceUrlParams() {
   const radios = document.getElementsByName('vid-src')
   const params = []
   Array.from(document.getElementsByClassName('vid-src-text')).forEach(ele => {
