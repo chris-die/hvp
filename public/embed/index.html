@@ -10,34 +10,52 @@
 </head>
 <body class="container">
   <h1 class="CategoryLandingPage__header__Title">HTML Video Player Embed</h1>
+  <h2>Video source</h2>
   <div>
-    <!-- Disabled until we actually have some content to test -->
-    <input type="radio" name="vid-src" id="vid-src-serato-id">
-    <label for="vid-src-serato-id">Serato Video ID</label>
+    <label>
+      <input type="radio" name="vid-src" id="vid-src-serato-id">
+      Serato Video ID
+    </label>
     <input type="text" id="vid-src-serato-id-val" disabled class="vid-src-text">
   </div>
   <div>
-    <input type="radio" name="vid-src" id="vid-src-url">
-    <label for="vid-src-url">Source URL</label>
+    <label>
+      <input type="radio" name="vid-src" id="vid-src-url">
+      Source URL
+    </label>
     <input type="text" id="vid-src-url-val" size="50" disabled class="vid-src-text">
   </div>
   <div>
-    <input type="radio" name="vid-src" id="vid-src-bbb" data-src="https://multiplatform-f.akamaihd.net/i/multi/will/bunny/big_buck_bunny_,640x360_400,640x360_700,640x360_1000,950x540_1500,.f4v.csmil/master.m3u8">
-    <label for="vid-src-bbb">Big Buck Bunny (HLS test stream)</label>
+    <label>
+      <input type="radio" name="vid-src" data-src="https://multiplatform-f.akamaihd.net/i/multi/will/bunny/big_buck_bunny_,640x360_400,640x360_700,640x360_1000,950x540_1500,.f4v.csmil/master.m3u8">
+      Big Buck Bunny (HLS test stream)
+    </label>
   </div>
+  <div>
+    <label>
+      <input type="radio" name="vid-src" data-src="https://bitmovin-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8">
+      Parkour (HLS test stream)
+    </label>
+  </div>
+  <h2>Embed settings</h2>
   <div>
     <input type="number" size="5" id="embed-width" value="560" class="embed-size">
     x
     <input type="number" size="5" id="embed-height" value="315" class="embed-size">
   </div>
+  <h2>Developer settings</h2>
   <div>
-    <input type="radio" name="html-src" id="html-src-wds" data-src="/index.html" checked>
-    <label for="html-src-wds">Webpack Dev Server</label>
-    <input type="radio" name="html-src" id="html-src-dist" data-src="/dist/index.html">
-    <label for="html-src-dist">Dist directory</label>
+    <label>
+      <input type="radio" name="html-src" data-src="/index.html" checked>
+      Webpack Dev Server
+    </label>
+    <label>
+      <input type="radio" name="html-src" data-src="/dist/index.html">
+      Dist directory
+    </label>
   </div>
   <div id="iframe-container">
-    <iframe width="560" height="315" title="Serato video player" frameborder="0" allow="fullscreen" allowfullscreen></iframe>
+    <iframe width="560" height="315" title="Serato video player" frameborder="0" allow="autoplay; fullscreen; picture-in-picture;" allowfullscreen></iframe>
   </div>
   <pre id="embed-url"></pre>
   <pre id="embed-html" style="width: 600px;"></pre>
