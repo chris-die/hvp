@@ -19,16 +19,18 @@ interface VideoJsPlayer extends VideoJsPlayerBase {
 }
 
 interface UrlOptions {
-  /** Display controls. Defaults to `true`. */
+  /** Show controls. Defaults to `true`. */
   controls: boolean;
   /** Autoplay. Defaults to `true`. */
   autoplay: boolean;
   /** Play muted. Defaults to `false`. */
   muted: boolean;
-  /** Loop play. Defaults to `false`. */
+  /** Loop playback of video. Defaults to `false`. */
   loop: boolean;
   /** Allow Picture-in-Picture. Defaults to `true`. */
   pictureInPicture: boolean;
+  /** Display the big play button overlay. Defaults to `true`. */
+  bigPlayButton: boolean;
 }
 
 const queryStringParams = new URLSearchParams(location.search)
@@ -41,6 +43,7 @@ const urlOptions = ((qs: URLSearchParams): UrlOptions => {
     muted: qs.get('muted') === '1',
     loop: qs.get('muted') === '1',
     pictureInPicture: qs.get('pip') === null || qs.get('pip') !== '0',
+    bigPlayButton: qs.get('bb') === null || qs.get('bb') !== '0',
   }
 })(queryStringParams)
 
@@ -63,6 +66,7 @@ const player: VideoJsPlayer = <VideoJsPlayer>videojs(
     controlBar: {
       pictureInPictureToggle: urlOptions.pictureInPicture
     },
+    bigPlayButton: urlOptions.bigPlayButton,
     preload: 'auto',
     // Layout options explained here: https://docs.videojs.com/tutorial-layout.html
     fill: true,
