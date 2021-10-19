@@ -1,5 +1,6 @@
 import videojs, { VideoJsPlayer as VideoJsPlayerBase } from 'video.js'
-import '!style-loader!css-loader!video.js/dist/video-js.css'
+// import '!style-loader!css-loader!video.js/dist/video-js.css'
+import 'video.js/dist/video-js.css'
 import './style.css'
 
 // Adds missing TS definitions from `@types/video.js`.
