@@ -31,6 +31,8 @@ interface UrlOptions {
   pictureInPicture: boolean;
   /** Display the big play button overlay. Defaults to `true`. */
   bigPlayButton: boolean;
+  /** Display the loading spinner. Defaults to `true`. */
+  loadingSpinner: boolean;
 }
 
 const queryStringParams = new URLSearchParams(location.search)
@@ -44,6 +46,7 @@ const urlOptions = ((qs: URLSearchParams): UrlOptions => {
     loop: qs.get('muted') === '1',
     pictureInPicture: qs.get('pip') === null || qs.get('pip') !== '0',
     bigPlayButton: qs.get('bb') === null || qs.get('bb') !== '0',
+    loadingSpinner: qs.get('loading') === null || qs.get('loading') !== '0',
   }
 })(queryStringParams)
 
@@ -73,6 +76,14 @@ const player: VideoJsPlayer = <VideoJsPlayer>videojs(
     responsive: true,
   }
 )
+
+// In theory this is configurable when you create player. But the documentation doesn't explain how.
+// So this is a bit of a hack.
+if (!urlOptions.loadingSpinner) {
+  Array.from(document.getElementsByClassName('vjs-loading-spinner')).forEach((ele: HTMLElement) => {
+    ele.style.display = 'none'
+  })
+}
 
 // Disable the Picture-in-Picture option on the <video> element.
 // This will remove the `Watch in Picture-in-Picture` option in the context menu.
@@ -116,6 +127,15 @@ player.src(source)
 
 // Add a linter
 
-// Polyfill for URLSearchParams ?????
-// See browser support:
-// https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
+// --------------------------------
+// Polyfill or alternatives needed:
+// --------------------------------
+// - Array.from
+//    https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from
+//
+// - URLSearchParams
+//    https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
+//
+// - Array.forEach
+//    https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
+//    Probably OK. Supported in IE9.
