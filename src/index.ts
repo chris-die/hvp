@@ -41,6 +41,16 @@ const urlOptions = ((qs: URLSearchParams): UrlOptions => {
   }
 })(queryStringParams)
 
+// Get the source stream
+const source = ((qs: URLSearchParams): videojs.Tech.SourceObject => {
+  // TODO: build up URL using `id` param.
+  return {
+    src: qs.get('src'),
+    type: 'application/x-mpegURL',
+  }
+})(queryStringParams)
+
+
 const player: VideoJsPlayer = <VideoJsPlayer>videojs(
   'player', {
     // https://docs.videojs.com/tutorial-options.html
@@ -63,19 +73,11 @@ const player: VideoJsPlayer = <VideoJsPlayer>videojs(
 // and display that annoying little overlay icon on the right side of the video :-(
 player.disablePictureInPicture(!urlOptions.pictureInPicture)
 
-player.src(getSource(queryStringParams))
+player.src(source)
 
 // player.ready(() => {
 //   console.log(['ready', window.location, window.document.location, window.top.location])
 // })
-
-function getSource(qs: URLSearchParams): videojs.Tech.SourceObject {
-  return {
-    // src: 'https://multiplatform-f.akamaihd.net/i/multi/will/bunny/big_buck_bunny_,640x360_400,640x360_700,640x360_1000,950x540_1500,.f4v.csmil/master.m3u8',
-    src: qs.get('src'),
-    type: 'application/x-mpegURL',
-  }
-}
 
 // App
 //  - `id` URL arg
@@ -101,15 +103,6 @@ function getSource(qs: URLSearchParams): videojs.Tech.SourceObject {
 // `embed.html` test page
 // - Show production embed snippet using const playerProductionDomain
 // - Add snippet to clipboard
-// - Parameterise:
-//  - Controls.
-//  - Muted.
-//  - Autoplay.
-//  - Picture in picture.
-//  URL params
-//   - id=<id> or src=<url>
-//   -  controls=0&muted=1&autoplay=0&pip=0
-
 
 // Add a linter
 
