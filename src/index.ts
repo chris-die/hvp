@@ -1,12 +1,54 @@
-import videojs, { VideoJsPlayer } from 'video.js'
+import videojs, { VideoJsPlayer as VideoJsPlayerBase } from 'video.js'
 import '!style-loader!css-loader!video.js/dist/video-js.css'
 import './style.css'
 
-const player: VideoJsPlayer = videojs(
+// Adds missing TS definitions from `@types/video.js`.
+// Hopefully we can remove this at some stage when `@types/video.js` is updated.
+// Keep watching npm page for new versions (currently on 7.3.27):
+// https://www.npmjs.com/package/@types/video.js
+interface VideoJsPlayer extends VideoJsPlayerBase {
+  /**
+   * Disable Picture-in-Picture mode.
+   *
+   * @param {boolean} value
+   *                  - true will disable Picture-in-Picture mode
+   *                  - false will enable Picture-in-Picture mode
+   */
+  disablePictureInPicture(value: boolean): void;
+}
+
+interface UrlOptions {
+  /** Display controls. Defaults to `true`. */
+  controls: boolean;
+  /** Play muted. Defaults to `false`. */
+  muted: boolean;
+  /** Autoplay. Defaults to `true`. */
+  autoplay: boolean;
+  /** Allow Picture-in-Picture. Defaults to `true`. */
+  pictureInPicture: boolean;
+}
+
+const queryStringParams = new URLSearchParams(location.search)
+
+// Get player options that can be set via URL
+const urlOptions = ((qs: URLSearchParams): UrlOptions => {
+  return {
+    controls: qs.get('controls') === null || qs.get('controls') !== '0',
+    muted: qs.get('muted') === '1',
+    autoplay: qs.get('autoplay') === null || qs.get('autoplay') !== '0',
+    pictureInPicture: qs.get('pip') === null || qs.get('pip') !== '0',
+  }
+})(queryStringParams)
+
+const player: VideoJsPlayer = <VideoJsPlayer>videojs(
   'player', {
     // https://docs.videojs.com/tutorial-options.html
-    controls: true,
-    autoplay: true,
+    controls: urlOptions.controls,
+    muted: urlOptions.muted,
+    autoplay: urlOptions.autoplay,
+    controlBar: {
+      'pictureInPictureToggle': urlOptions.pictureInPicture
+    },
     preload: 'auto',
     // Layout options explained here:
     // https://docs.videojs.com/tutorial-layout.html
@@ -15,23 +57,38 @@ const player: VideoJsPlayer = videojs(
   }
 )
 
-player.src({
-  src: 'https://multiplatform-f.akamaihd.net/i/multi/will/bunny/big_buck_bunny_,640x360_400,640x360_700,640x360_1000,950x540_1500,.f4v.csmil/master.m3u8',
-  // src: 'https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8',
-  // src: 'https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8',
-  type: 'application/x-mpegURL',
-})
+// This is ignored by Firefox. There's no way to disabled PIP.
+// Firefox will also show the `Watch in Picture-in-Picture` option in the context menu
+// and display that annoying little overlay icon on the right side of the video :-(
+player.disablePictureInPicture(!urlOptions.pictureInPicture)
 
-player.ready(() => {
-  console.log('ready')
-})
+player.src(getSource(queryStringParams))
+
+// player.ready(() => {
+//   console.log(['ready', window.location, window.document.location, window.top.location])
+// })
+
+function getSource(qs: URLSearchParams): videojs.Tech.SourceObject {
+  return {
+    // src: 'https://multiplatform-f.akamaihd.net/i/multi/will/bunny/big_buck_bunny_,640x360_400,640x360_700,640x360_1000,950x540_1500,.f4v.csmil/master.m3u8',
+    src: qs.get('src'),
+    type: 'application/x-mpegURL',
+  }
+}
 
 // App
 //  - `id` URL arg
 //  - Poster image
 //  - `src` URL arg
-//  - Events for analytics (only for Serato vids)
-//     - `timeupdate` event (can't find in docs)
+
+// HLS test streams (untested)
+// https://github.com/bengarney/list-of-streams
+
+// Analytics
+// - Only for Serato vids)
+// - Use window.top to get location of embed
+// - Useful videojs events
+//  - `timeupdate` event (can't find in docs)
 
 // CSP considerations
 // - Nonce? https://content-security-policy.com/nonce/
@@ -43,3 +100,18 @@ player.ready(() => {
 // `embed.html` test page
 // - Show production embed snippet using const playerProductionDomain
 // - Add snippet to clipboard
+// - Parameterise:
+//  - Controls.
+//  - Muted.
+//  - Autoplay.
+//  - Picture in picture.
+//  URL params
+//   - id=<id> or src=<url>
+//   -  controls=0&muted=1&autoplay=0&pip=0
+
+
+// Add a linter
+
+// Polyfill for URLSearchParams ?????
+// See browser support:
+// https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
