@@ -133,7 +133,7 @@ function getPlayerHtmlDoc () {
   }
 }
 
-function htmlencode(html) {
+function htmlencode (html) {
   const div = document.createElement('div')
   div.appendChild(document.createTextNode(html))
   return div.innerHTML
