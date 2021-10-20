@@ -15,5 +15,13 @@ module.exports = {
     '@typescript-eslint'
   ],
   rules: {
-  }
+  },
+  overrides: [
+    {
+      files: ['*.ts'],
+      rules: {
+        'no-undef': 'off'
+      }
+    }
+  ]
 }

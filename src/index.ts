@@ -80,9 +80,10 @@ const player: VideoJsPlayer = <VideoJsPlayer>videojs(
 // In theory this is configurable when you create player. But the documentation doesn't explain how.
 // So this is a bit of a hack.
 if (!urlOptions.loadingSpinner) {
-  Array.from(document.getElementsByClassName('vjs-loading-spinner')).forEach((ele: HTMLElement) => {
-    ele.style.display = 'none'
-  })
+  const elem = document.getElementsByClassName('vjs-loading-spinner') as HTMLCollectionOf<HTMLElement>
+  for (let i = 0; i < elem.length; i++) {
+    elem[i].style.display = 'none'
+  }
 }
 
 // Disable the Picture-in-Picture option on the <video> element.
@@ -97,9 +98,15 @@ player.disablePictureInPicture(!urlOptions.pictureInPicture)
 player.src(source)
 
 // App
-//  - `id` URL arg
-//  - Poster image
-//  - `src` URL arg
+// - `id` arg
+//    - Derive URL to streaming manifest
+//    - What about content type of manifest? Hard code as `application/x-mpegURL`?
+//      - Maybe `id` value could indicate this. eg `01-abc123` = HLS, `02-abc123` = DASH.
+// - Poster image
+//    - Only for Serato vids
+//    - Derive URL from `id` arg
+//    - Use as `poster` in video config
+//    - Add as HTML element into web page for loading state and as fallback for unsupported browsers
 
 // HLS test streams
 // https://github.com/bengarney/list-of-streams
@@ -115,11 +122,6 @@ player.src(source)
 //  - Can we do something fancy with Cloudfront.?
 //  - eg Turn '/index.html?id=abc123&controls=0' into '/123?controls=0' or maybe '/player/123?controls=0'
 //  - Needs to work for non-latest versions too. eg '/1.2.3/123?controls=0' or maybe '/1.2.3/player/123?controls=0'
-
-// Chunk file output
-// - JS vendors + custom
-// - CSS vendor + custom (yes??? no???)
-// - Add hash to file name
 
 // CSP
 /**
@@ -148,9 +150,6 @@ player.src(source)
 // --------------------------------
 // Polyfill or alternatives needed:
 // --------------------------------
-// - Array.from
-//    https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from
-//
 // - URLSearchParams
 //    https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
 //
