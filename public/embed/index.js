@@ -25,10 +25,21 @@ Array.from(document.getElementsByClassName('embed-options')).forEach(ele => {
   ele.addEventListener('click', setPlayerUrl)
 })
 
-
 // Radio buttons that specify the HTML document to use.
 // ie. One that is served from WDS or one that is served from the `dist` directory.
 document.getElementsByName('html-src').forEach(ele => ele.addEventListener('click', setPlayerUrl))
+
+// UI elements that allow selecting "preset" options
+const eles = [...document.querySelectorAll('.param-presets span')]
+eles.forEach(ele => {
+  ele.addEventListener('click', () => {
+    const checked = JSON.parse(ele.dataset.optionsChecked)
+    Array.from(document.getElementsByClassName('embed-options')).forEach(ele => {
+      ele.checked = checked.includes(ele.name)
+    })
+    setPlayerUrl()
+  })
+})
 
 function setEmbedSize() {
   document.getElementById('iframe-container').style.width = document.getElementById('embed-width').value + 'px'

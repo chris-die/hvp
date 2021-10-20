@@ -14,3 +14,17 @@ pre {
   height: 315px;
   border: 3px solid rgb(245, 118, 196);
 }
+
+.param-presets {
+  margin: -10px 0 10px 0;
+  font-size: 80%;
+}
+
+.param-presets span {
+  color: rgb(181, 240, 247);
+}
+
+.param-presets span:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
