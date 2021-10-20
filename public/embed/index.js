@@ -48,7 +48,7 @@ Array.from(document.getElementsByClassName('copy-to-clipboard')).forEach(ele => 
   })
 })
 
-function setEmbedSize() {
+function setEmbedSize () {
   document.getElementById('iframe-container').style.width = document.getElementById('embed-width').value + 'px'
   document.getElementById('iframe-container').style.height = document.getElementById('embed-height').value + 'px'
   iframe.width = document.getElementById('embed-width').value
@@ -57,7 +57,7 @@ function setEmbedSize() {
   setFrameborder()
 }
 
-function getEmbedPlayerOptions() {
+function getEmbedPlayerOptions () {
   const params = []
   Array.from(document.getElementsByClassName('embed-options')).forEach(ele => {
     if (ele.checked === !!parseInt(ele.dataset.checked)) {
@@ -67,7 +67,7 @@ function getEmbedPlayerOptions() {
   return params
 }
 
-function setPlayerUrl() {
+function setPlayerUrl () {
   const params = getPlayerSourceUrlParams()
   if (params.length > 0) {
     const url = getPlayerHtmlDoc() + '?' + params.concat(getEmbedPlayerOptions()).join('&')
@@ -81,7 +81,7 @@ function setPlayerUrl() {
   setFrameborder()
 }
 
-function setEmbedHtmlSnippet() {
+function setEmbedHtmlSnippet () {
   if (playerURL !== '') {
     const ele = document.getElementById('embed-html')
     ele.innerHTML = htmlencode(iframe.outerHTML.replace(' src="/', ' src="' + playerProductionDomain + '/'))
@@ -89,14 +89,14 @@ function setEmbedHtmlSnippet() {
   }
 }
 
-function setFrameborder() {
-  let show = playerURL === '' ||
+function setFrameborder () {
+  const show = playerURL === '' ||
               document.activeElement.id === 'embed-width' ||
               document.activeElement.id === 'embed-height'
   document.getElementById('iframe-container').style.borderColor = show ? 'rgb(245, 118, 196)' : '#000'
 }
 
-function getPlayerSourceUrlParams() {
+function getPlayerSourceUrlParams () {
   const radios = document.getElementsByName('vid-src')
   const params = []
   Array.from(document.getElementsByClassName('vid-src-text')).forEach(ele => {
@@ -124,7 +124,7 @@ function getPlayerSourceUrlParams() {
   return params
 }
 
-function getPlayerHtmlDoc() {
+function getPlayerHtmlDoc () {
   const radios = document.getElementsByName('html-src')
   for (let i = 0; i < radios.length; i++) {
     if (radios[i].checked) {
