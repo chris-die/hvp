@@ -120,8 +120,8 @@ player.src(source)
 
 // Review Cloudfront URL structure
 //  - Can we do something fancy with Cloudfront.?
-//  - eg Turn '/index.html?id=abc123&controls=0' into '/123?controls=0' or maybe '/player/123?controls=0'
-//  - Needs to work for non-latest versions too. eg '/1.2.3/123?controls=0' or maybe '/1.2.3/player/123?controls=0'
+//  - eg Turn '/index.html?id=abc123&controls=0' into '/abc123?controls=0' or maybe '/player/abc123?controls=0'
+//  - Needs to work for non-latest versions too. eg '/1.2.3/abc123?controls=0' or maybe '/1.2.3/player/abc123?controls=0'
 
 // CSP
 /**
