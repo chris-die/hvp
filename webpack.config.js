@@ -9,9 +9,9 @@ module.exports = (env, argv) => {
     entry: {
       index: {
         import: './src/index.ts',
-        dependOn: 'shared'
+        dependOn: 'vendor'
       },
-      shared: 'video.js'
+      vendor: 'video.js'
     },
     mode: 'development',
     module: {
@@ -45,11 +45,16 @@ module.exports = (env, argv) => {
         title: 'Video Player',
         template: 'src/index.html'
       })
-    ].concat(argv.mode === 'production' ? [new MiniCssExtractPlugin(), new CssMinimizerPlugin()] : []),
+    ].concat(
+      argv.mode === 'production'
+        ? [new MiniCssExtractPlugin({ filename: '[name].[contenthash].css' }), new CssMinimizerPlugin()]
+        : []
+    ),
     output: {
-      filename: '[name].bundle.js',
+      filename: '[name].[contenthash].js',
       path: path.resolve(__dirname, 'dist'),
-      clean: true
+      clean: true,
+      hashDigestLength: 8
     },
     stats: {
       children: true
