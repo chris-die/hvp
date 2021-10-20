@@ -28,3 +28,15 @@ pre {
   cursor: pointer;
   text-decoration: underline;
 }
+
+.copy-to-clipboard:hover {
+  cursor: pointer;
+  background-color: cornflowerblue;
+}
+
+textarea {
+  resize: none;
+  width: 560px;
+  height: 100px;
+  display: none;
+}

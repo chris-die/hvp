@@ -1,4 +1,4 @@
-const playerProductionDomain = 'https://player.serato.com/'
+const playerProductionDomain = 'https://player.serato.com'
 
 let playerURL = ''
 const iframe = document.getElementsByTagName('iframe')[0]
@@ -41,6 +41,13 @@ eles.forEach(ele => {
   })
 })
 
+// UI elements that can copy their innerHTML property to the clipboard
+Array.from(document.getElementsByClassName('copy-to-clipboard')).forEach(ele => {
+  ele.addEventListener('click', () => {
+    navigator.clipboard.writeText(ele.textContent.replace(/src="(.*?)"/, 'src="' + document.getElementById('embed-url').textContent + '"'))
+  })
+})
+
 function setEmbedSize() {
   document.getElementById('iframe-container').style.width = document.getElementById('embed-width').value + 'px'
   document.getElementById('iframe-container').style.height = document.getElementById('embed-height').value + 'px'
@@ -67,7 +74,7 @@ function setPlayerUrl() {
     if (playerURL !== url) {
       playerURL = url
       iframe.src = playerURL
-      document.getElementById('embed-url').innerHTML = playerURL
+      document.getElementById('embed-url').innerHTML = playerProductionDomain + playerURL
       setEmbedHtmlSnippet()
     }
   }
@@ -76,7 +83,9 @@ function setPlayerUrl() {
 
 function setEmbedHtmlSnippet() {
   if (playerURL !== '') {
-    document.getElementById('embed-html').innerHTML = htmlencode(iframe.outerHTML)
+    const ele = document.getElementById('embed-html')
+    ele.innerHTML = htmlencode(iframe.outerHTML.replace(' src="/', ' src="' + playerProductionDomain + '/'))
+    ele.style.display = 'inline'
   }
 }
 
