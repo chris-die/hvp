@@ -6,7 +6,13 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 
 module.exports = (env, argv) => {
   return {
-    entry: './src/index.ts',
+    entry: {
+      index: {
+        import: './src/index.ts',
+        dependOn: 'shared'
+      },
+      shared: 'video.js'
+    },
     mode: 'development',
     module: {
       rules: [
@@ -32,7 +38,7 @@ module.exports = (env, argv) => {
       ]
     },
     resolve: {
-      extensions: ['.tsx', '.ts', '.js'],
+      extensions: ['.tsx', '.ts', '.js']
     },
     plugins: [
       new HtmlWebpackPlugin({
@@ -41,7 +47,7 @@ module.exports = (env, argv) => {
       })
     ].concat(argv.mode === 'production' ? [new MiniCssExtractPlugin(), new CssMinimizerPlugin()] : []),
     output: {
-      filename: 'bundle.js',
+      filename: '[name].bundle.js',
       path: path.resolve(__dirname, 'dist'),
       clean: true
     },
@@ -55,13 +61,33 @@ module.exports = (env, argv) => {
         new TerserPlugin({
           minify: TerserPlugin.uglifyJsMinify
         })
-      ].concat(argv.mode === 'production' ? [new CssMinimizerPlugin()] : [])
+      ].concat(argv.mode === 'production' ? [new CssMinimizerPlugin()] : []),
+      splitChunks: {
+        chunks: 'async',
+        minSize: 20000,
+        minRemainingSize: 0,
+        minChunks: 1,
+        maxAsyncRequests: 30,
+        maxInitialRequests: 30,
+        enforceSizeThreshold: 50000,
+        cacheGroups: {
+          defaultVendors: {
+            test: /[\\/]node_modules[\\/]/,
+            priority: -10,
+            reuseExistingChunk: true
+          },
+          default: {
+            minChunks: 2,
+            priority: -20,
+            reuseExistingChunk: true
+          }
+        }
+      }
     },
     performance: {
       maxEntrypointSize: 700000,
       maxAssetSize: 700000
     },
-
     devServer: {
       // headers: {},
       static: [
