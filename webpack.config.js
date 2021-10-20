@@ -1,10 +1,10 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const TerserPlugin = require("terser-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 
-module.exports = (env, argv) =>{
+module.exports = (env, argv) => {
   return {
     entry: './src/index.ts',
     mode: 'development',
@@ -13,23 +13,23 @@ module.exports = (env, argv) =>{
         {
           test: /\.tsx?$/,
           use: 'ts-loader',
-          exclude: /node_modules/,
+          exclude: /node_modules/
         },
         {
           test: /\.css$/i,
           use: [
-            argv.mode === 'production' ? MiniCssExtractPlugin.loader : "style-loader",
+            argv.mode === 'production' ? MiniCssExtractPlugin.loader : 'style-loader',
             'css-loader'
-          ],
+          ]
         },
         {
           loader: 'url-loader',
           test: /\.(png|woff|woff2|eot|ttf|svg)$/,
           options: {
-            limit: 100000,
+            limit: 100000
           }
         }
-      ],
+      ]
     },
     resolve: {
       extensions: ['.tsx', '.ts', '.js'],
@@ -38,28 +38,28 @@ module.exports = (env, argv) =>{
       new HtmlWebpackPlugin({
         title: 'Video Player',
         template: 'src/index.html'
-      }),
+      })
     ].concat(argv.mode === 'production' ? [new MiniCssExtractPlugin(), new CssMinimizerPlugin()] : []),
     output: {
       filename: 'bundle.js',
       path: path.resolve(__dirname, 'dist'),
-      clean: true,
+      clean: true
     },
     stats: {
-      children: true,
+      children: true
       // modules: false,
     },
     optimization: {
       minimize: true,
       minimizer: [
         new TerserPlugin({
-          minify: TerserPlugin.uglifyJsMinify,
+          minify: TerserPlugin.uglifyJsMinify
         })
-      ].concat(argv.mode === 'production' ? [new CssMinimizerPlugin()] : []),
+      ].concat(argv.mode === 'production' ? [new CssMinimizerPlugin()] : [])
     },
     performance: {
       maxEntrypointSize: 700000,
-      maxAssetSize: 700000,
+      maxAssetSize: 700000
     },
 
     devServer: {
@@ -72,8 +72,8 @@ module.exports = (env, argv) =>{
         {
           directory: path.join(__dirname, 'dist'),
           publicPath: '/dist'
-        },
-      ],
+        }
+      ]
     }
   }
-};
+}
